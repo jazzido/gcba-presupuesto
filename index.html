@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="presupuesto.css">
     <script src="bower_components/lodash/dist/lodash.min.js"></script>
     <script src="bower_components/crossfilter2/crossfilter.js"></script>
-    <script src="bower_components/d3plus/d3plus.full.min.js"></script>
+    <script src="bower_components/d3plus/d3plus.full.js"></script>
     <!-- ESTILOS EXTRA -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -46,7 +46,7 @@
     </header>
 
     <!-- NAVEGACIÓN PRINCIPAL -->
-    <nav class="navbar navbar-default" role="navigation">
+    <!-- nav class="navbar navbar-default" role="navigation">
       <div class="container">
         <div class="row">
           <div class="navbar-header">
@@ -71,7 +71,7 @@
           </div>
         </div>
       </div>
-    </nav>
+    </nav -->
     <!-- FIN DE NAVEGACIÓN PRINCIPAL -->
 
     <!-- CONTENIDO -->
@@ -81,7 +81,28 @@
           <div class="col-md-12">
               <h1>Presupuesto</h1>
               <div class="visualization-container" id="treemap-jurisdiccion"></div>
-              <div class="visualization-container" id="stacked-jurisdiccion"></div>
+              <div class="visualization-container" id="stacked-jurisdiccion">
+                  <label class="radio-inline">
+                      <input type="radio" name="measure-select" value="sancion"> Sancionado
+                  </label>
+                  <label class="radio-inline">
+                      <input type="radio" name="measure-select" value="vigente"> Vigente
+                  </label>
+                  <label class="radio-inline">
+                      <input type="radio" name="measure-select" value="definitivo"> Definitivo
+                  </label>
+                  <label class="radio-inline">
+                      <input type="radio" name="measure-select" value="devengado"> Devengado
+                  </label>
+
+                  <label class="checkbox-inline">
+                      <input type="checkbox" id="adjust-toggle" value="true"> Ajustar según IPC-CABA
+                  </label>
+
+              </div>
+
+              <div class="visualization-container" id="sankey-jurisdiccion-ff"></div>
+
           </div>
         </div>
       </div>

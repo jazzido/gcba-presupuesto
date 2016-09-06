@@ -27,57 +27,108 @@ d3.csv('Data/presu_agrupado.csv')
       /* treemap */
       CF = crossfilter(rows);
 
-      var d_jur = CF.dimension(
-          function(d) { return [d.anio, d.jur_desc]; },
-          true
-      );
-
-      function getAgg(column) {
-          return d_jur.group().reduceSum(_.property(column))
-                      .all()
-                      .map(function(d, i) {
-                          return {
-                              key: i,
-                              anio: d.key[0],
-                              jur: d.key[1],
-                              value: d.value
-                          };
-                      });
-      };
-
       d3plus.viz()
+            .format({locale: 'es_ES'})
             .container('#treemap-jurisdiccion')
-            .data(getAgg('sancion'))
-            .id('jur')
-            .text('jur')
+            .data(rows)
+            .id('jur_desc')
+            .text('jur_desc')
             .type('tree_map')
             .time('anio')
             .size({
-                value: 'value',
+                value: 'sancion',
                 threshold: true
             })
             .color({
                 scale: CSCALE,
             })
-            //.tooltip({html: 'caca'})
+            .ui([
+                {
+                    "method": "size",
+                    "value": [ "sancion" , "sancion_adjust", "vigente", "vigente_adjust", "definitivo", "definitivo_adjust", "devengado", "devengado_adjust"]
+                }]
+            )
             .labels({"align": "left", "valign": "top"})
             .title({total: true, value: 'Presupuesto según Jurisdicciones'})
+            .aggs({sancion: 'sum'})
             .draw();
 
       /* stacked */
-      var visualization = d3plus.viz()
-          .container("#stacked-jurisdiccion")
-                                .data(getAgg('sancion_adjust'))
-                                .type("stacked")
-                                .id("jur")
-                                .text("jur")
-                                .y("value")
-                                .x("anio")
-                                .legend(true)
-                                .color({
-                                    scale: CSCALE,
-                                })
-                                .draw();
+      var measure = 'sancion';
+      var stacked = d3plus.viz()
+                      .container("#stacked-jurisdiccion")
+                      .format({locale: 'es_ES'})
+                      .data(rows)
+                      .type("stacked")
+                      .id("jur_desc")
+                      .text("jur_desc")
+                      .y(measure)
+                      .x("anio")
+                      .legend(true)
+                      .color({
+                          scale: CSCALE,
+                      })
+                          .draw();
+
+      d3.selectAll("input[name=measure-select]").on("change", function() {
+          measure = this.value;
+          if (d3.select('input#adjust-toggle').node().checked) {
+              measure += '_adjust';
+          }
+          stacked.y(measure).draw();
+      });
+
+      d3.select('input#adjust-toggle').on('change', function() {
+          measure = d3.selectAll("input[name=measure-select]:checked").node().value;
+          if (this.checked) {
+              measure += '_adjust';
+          }
+          stacked.y(measure).draw();
+      })
+
+      /* sankey */
+
+      var d_inciso_ff = CF.dimension(
+          function(d) { return [/*d.anio, */d.inciso_desc, d.ff_desc]; },
+          true
+      );
+
+      var sankey_data = d_inciso_ff
+                      .group()
+                      .reduceSum(_.property('sancion_adjust'))
+                      .all()
+                      .map(function(d, i) {
+                          return {
+                              key: i,
+                              //                              anio: d.key[0],
+                              source: d.key[0],
+                              target: d.key[1],
+                              value: d.value
+                          };
+                      });
+
+      d3plus.viz()
+            .container("#sankey-jurisdiccion-ff")
+            .id("id")
+            .nodes(
+                _.map(
+                    _.uniq(
+                        _.flatMap(sankey_data,
+                                  function(d) { return [d.jur, d.ff]; })
+                    ),
+                    function(d) { return { id: d }; }
+                )
+            )
+            .edges({
+                "strength": "value",
+                "value": sankey_data
+            })
+            .time('anio')
+            .size(100)
+            .type("sankey")
+            .draw();
+
+
 
 
 
