@@ -1,17 +1,11 @@
-.visualization-container {
+.viz {
   height: 500px;
-
 }
-/*
-'#DF4944',
-'#EE9224',
-'#FAD448',
-'#1FB7DC',
-'#0F74C7',
-'#2AB186',
-'#88B84D',
-'#CBD640',
-'#2F3E4B',
-'#8A55A7',
-'#F04691'
-*/
+
+.visualization-container .controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}

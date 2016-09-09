@@ -35,11 +35,6 @@
             <div class="col-md-6 col-sm-6 text-right oculto">
               <h5 class="sub-brand"><img src="bastrap3/bac-header-2.png"/></h5>
               <!--<h5 class="sub-brand">Vamos Buenos Aires</h5>-->
-
-
-
-
-
             </div>
         </div>
       </div>
@@ -76,40 +71,180 @@
 
     <!-- CONTENIDO -->
     <main class="main-container" role="main">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-              <h1>Presupuesto</h1>
-              <div class="visualization-container" id="treemap-jurisdiccion"></div>
-              <div class="visualization-container" id="stacked-jurisdiccion">
-                  <label class="radio-inline">
-                      <input type="radio" name="measure-select" value="sancion"> Sancionado
-                  </label>
-                  <label class="radio-inline">
-                      <input type="radio" name="measure-select" value="vigente"> Vigente
-                  </label>
-                  <label class="radio-inline">
-                      <input type="radio" name="measure-select" value="definitivo"> Definitivo
-                  </label>
-                  <label class="radio-inline">
-                      <input type="radio" name="measure-select" value="devengado"> Devengado
-                  </label>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Ejecución Presupuestaria</h1>
+                    <p>El presupuesto refleja lo que hace el
+                        Estado con los recursos que nos pide a todos los ciudadanos. Por eso,
+                        desde el Gobierno de la Ciudad de Buenos Aires queremos rendir cuentas
+                        de forma directa sobre la manera en que utilizamos esos fondos. Estamos
+                        convencidos de que esa es la manera de estimular la participación,
+                        optimizar los controles y mejorar el nivel de la discusión pública.</p>
 
-                  <label class="checkbox-inline">
-                      <input type="checkbox" id="adjust-toggle" value="true"> Ajustar según IPC-CABA
-                  </label>
+                    <!-- quién -->
+                    <h2>¿Quién gasta?</h2>
+                    <p>Aquí se puede ver cuáles son las áreas administrativas
+                        encargadas de ejecutar el presupuesto, lo que permite conocer quiénes
+                        son los responsables de administrar los recursos públicos. Se la conoce
+                        como <em>clasificación institucional</em>.</p>
+                    <div class="visualization-container" id="quien">
+                        <div class="controls">
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="quien-measure-select" value="vigente" checked="checked"> Vigente
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="quien-measure-select" value="devengado"> Ejecutado
+                                </label>
+                            </div>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="quien-chart-select" value="tree_map" checked="checked">Treemap
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="quien-chart-select" value="stacked"> Áreas
+                                </label>
+                            </div>
+                        </div>
+                        <div class="viz"></div>
+                    </div>
+                    <br><br><br><br>
 
-              </div>
+                    <!-- qué -->
+                    <h2>¿En qué se gasta?</h2>
+                    <p>Mediante esta desagregación se puede ver qué tipo de bienes y
+                        servicios compra o contrata el Gobierno de la Ciudad. Se la conoce como
+                        clasificación por <em>objeto del gasto</em>.</p>
+                    <div class="visualization-container" id="que">
+                        <div class="controls">
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="que-measure-select" value="vigente" checked="checked"> Vigente
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="que-measure-select" value="devengado"> Ejecutado
+                                </label>
+                            </div>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="que-chart-select" value="tree_map" checked="checked">Treemap
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="que-chart-select" value="stacked"> Áreas
+                                </label>
+                            </div>
 
-              <div class="visualization-container" id="sankey-jurisdiccion-ff"></div>
+                        </div>
+                        <div class="viz"></div>
+                    </div>
+                    <br><br><br><br>
 
-          </div>
+                    <!-- para qué -->
+                    <h2>¿Para qué se gasta?</h2>
+                    <p>A través de esta clasificación se puede ver a qué políticas
+                        públicas contribuyen los fondos asignados en el presupuesto,
+                        independientemente de cuál sea el área que los ejecute. Se la conoce
+                        como <em>clasificación funcional</em> o <em>clasificación por finalidad y función</em>.</p>
+                    <div class="visualization-container" id="paraque">
+                        <div class="controls">
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="paraque-measure-select" value="vigente" checked="checked"> Vigente
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="paraque-measure-select" value="devengado"> Ejecutado
+                                </label>
+                            </div>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="paraque-chart-select" value="tree_map" checked="checked">Treemap
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="paraque-chart-select" value="stacked"> Áreas
+                                </label>
+                            </div>
+                        </div>
+                        <div class="viz"></div>
+                    </div>
+                    <br><br><br><br>
+
+                    <!-- como -->
+                    <h2>¿Cómo se financia?</h2>
+                    <p>Mediante esta clasificación es posible saber de dónde vienen
+                        los recursos de que dispone la Ciudad para financiar sus gastos. Se la
+                        llama <em>clasificación por fuente de financiamiento</em>.</p>
+                    <div class="visualization-container" id="como">
+                        <div class="controls">
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="como-measure-select" value="vigente" checked="checked"> Vigente
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="como-measure-select" value="devengado"> Ejecutado
+                                </label>
+                            </div>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="como-chart-select" value="tree_map" checked="checked">Treemap
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="como-chart-select" value="stacked"> Áreas
+                                </label>
+                            </div>
+                        </div>
+                        <div class="viz"></div>
+                    </div>
+                    <br><br><br><br>
+
+
+
+
+                    <div class="visualization-container" id="stacked">
+                        <div class="controls">
+                            <div>
+                                <label>Clasificar según:</label>
+                                <select class="form-control" name="dimension-select">
+                                    <option value="jur_desc">Jurisdicciones</option>
+                                    <option value="inciso_desc">Objeto del Gasto</option>
+                                    <option value="fin_desc">Finalidad</option>
+                                    <option value="ff_desc">Fuente de Financiamiento</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Etapa presupuestaria:</label><br>
+                                <label class="radio-inline">
+                                    <input type="radio" name="stacked-measure-select" value="sancion" checked="checked"> Sancionado
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="stacked-measure-select" value="vigente"> Vigente
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="stacked-measure-select" value="definitivo"> Definitivo
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="stacked-measure-select" value="devengado"> Devengado
+                                </label>
+
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="adjust-toggle" value="true"> Ajustar según IPC-CABA
+                                </label>
+                            </div>
+                        </div>
+                        <div class="viz"></div>
+                    </div>
+
+                    <div class="visualization-container" id="sankey">
+                        <div class="viz">
+                        </div>
+                    </div>
+
+                    <canvas width="50" height="50" id="icon-canvas" style="visibility: hidden;"></canvas>
+                </div>
+            </div>
         </div>
-      </div>
     </main>
     <!-- FIN DE CONTENIDO -->
-
-
 
     <footer>
       <div class="footer">
