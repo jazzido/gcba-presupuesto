@@ -1,3 +1,20 @@
+$(function() {
+    $('a[href*="#"]:not([href="#"])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+                return false;
+            }
+        }
+    });
+
+    $('[data-toggle="popover"]').popover({ trigger: "hover" });
+});
+
 var MEASURES = ['sancion', 'vigente', 'definitivo', 'devengado', 'sancion_adjust', 'vigente_adjust', 'definitivo_adjust', 'devengado_adjust'];
 
 var CSCALE = ['#DF4944',
@@ -35,15 +52,15 @@ d3.csv('Data/presu_agrupado.csv')
                            _.fromPairs(
                                _.map(MEASURES,
                                      function(m) {
-                                         return [m, parseFloat(d[m])];
+                                         return [m, +d[m]];
                                      })));
   })
   .get(function(error, rows) {
 
       var classifications = [
           { classification: 'quien', dimension: 'jur_desc' },
-          { classification: 'que', dimension: ['fin_desc', 'fun_desc'] },
-          { classification: 'paraque', dimension: ['inciso_desc', 'ppal_desc'] },
+          { classification: 'que', dimension: ['inciso_desc', 'ppal_desc'] },
+          { classification: 'paraque', dimension: ['fin_desc', 'fun_desc']  },
           { classification: 'como', dimension: 'ff_desc' },
       ];
 
@@ -67,7 +84,10 @@ d3.csv('Data/presu_agrupado.csv')
                                 value: _.isArray(c.dimension) ? _.first(c.dimension) : c.dimension
                             })
                             .labels({"align": "left", "valign": "top"})
-                            .title({total: true});
+                            .font({
+                                family: 'Helvetica, Arial, sans-serif',
+                                weight: '100'
+                            });
 
           function updateChart() {
               switch (selectedChartType) {
@@ -77,7 +97,8 @@ d3.csv('Data/presu_agrupado.csv')
                           //.text(_.isArray(c.dimension) ? _.last(c.dimension) : c.dimension)
                             .time({
                                 value: 'anio',
-                                solo: ['2016'] // TODO: Calculate this
+                                solo: ['2016'], // TODO: Calculate this
+                                fixed: false
                             })
                             .timeline(true)
                             .size({
@@ -86,6 +107,7 @@ d3.csv('Data/presu_agrupado.csv')
                             })
                             .legend({filters: true})
                             .depth(_.isArray(c.dimension) ? 1 : 0)
+                            .title({total: true})
                             .draw();
                       break;
                   case 'stacked':
@@ -96,6 +118,7 @@ d3.csv('Data/presu_agrupado.csv')
                             .time({value: 'anio', solo: []})
                             .timeline(false)
                             .depth(0)
+                            .title({total: false})
                             .draw();
                       break;
               }
@@ -229,4 +252,33 @@ d3.csv('Data/presu_agrupado.csv')
             .draw();
 
       */
+  });
+
+d3.csv('Data/geo.csv')
+  .row(function(d) {
+      return Object.assign(d,
+                           _.fromPairs(
+                               _.map(['COMUNAS','sancion','vigente','definitivo','devengado'],
+                                     function(m) {
+                                         return [m, +d[m]];
+                                     })));
+  })
+  .get(function(error, rows) {
+      console.log(rows);
+      d3plus.viz()
+            .container("#donde .viz")
+            .data(rows)
+            .coords('Data/comunas_topo.json')
+            .type("geo_map")
+            .id("COMUNAS")
+            .time({
+                value: 'anio',
+                solo: ['2016'] // TODO: Calculate this
+            })
+            .color('vigente')
+            .font({
+                family: 'Helvetica, Arial, sans-serif',
+                weight: '100'
+            })
+            .draw();
   });

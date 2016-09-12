@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="bastrap3/bastrap.css">
     <link rel="stylesheet" href="presupuesto.css">
     <script src="bower_components/lodash/dist/lodash.min.js"></script>
-    <script src="bower_components/crossfilter2/crossfilter.js"></script>
+    <!-- script src="bower_components/crossfilter2/crossfilter.js"></script -->
+    <!-- load topojson library -->
+    <script src="//d3plus.org/js/topojson.js"></script>
     <script src="bower_components/d3plus/d3plus.full.js"></script>
     <!-- ESTILOS EXTRA -->
     <!--[if lt IE 9]>
@@ -40,35 +42,6 @@
       </div>
     </header>
 
-    <!-- NAVEGACIÓN PRINCIPAL -->
-    <!-- nav class="navbar navbar-default" role="navigation">
-      <div class="container">
-        <div class="row">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
-              <span class="sr-only">Cambiar navegación</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#" title="Gobierno Electrónico">Gestión Digital</a>
-          </div>
-          <div class="collapse navbar-collapse" id="main-nav">
-            <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="base.html">Inicio</a></li>
-              <li><a href="base_landing.html">Landing</a></li>
-              <li><a href="base_panel.html">Panel</a></li>
-              <li><a href="base_curso.html">Curso</a></li>
-              <li><a href="base_formularios.html">Formularios</a></li>
-              <li><a href="base_tablas.html">Tablas</a></li>
-              <li><a href="base_tabs.html">Tabs</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav -->
-    <!-- FIN DE NAVEGACIÓN PRINCIPAL -->
-
     <!-- CONTENIDO -->
     <main class="main-container" role="main">
         <div class="container">
@@ -82,20 +55,53 @@
                         convencidos de que esa es la manera de estimular la participación,
                         optimizar los controles y mejorar el nivel de la discusión pública.</p>
 
+                    <div class="row shortcut-row">
+                        <a title="" data-original-title="" class="col-md-offset-1 col-md-2 col-sm-6 shortcut" href="#quien-gasta">
+                            <span class="bg-warning-lt icon-container">
+                                <img class="glyphicon quien" src="icons/quien.svg">
+                            </span>
+                            <h3>¿Quién gasta?</h3>
+                            <!-- p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur</p -->
+                        </a>
+                        <a title="" data-original-title="" class="col-md-2 col-sm-6 shortcut" href="#en-que-se-gasta">
+                            <span class="icon-container">
+                                <img class="glyphicon que" src="icons/que.svg">
+                            </span>
+                            <h3>¿En qué se gasta?</h3>
+                            <!-- p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur</p -->
+                        </a>
+                        <a title="" data-original-title="" class="col-md-2 col-sm-6 shortcut" href="#para-que-se-gasta">
+                            <span class="icon-container">
+                                <img class="glyphicon quien" src="icons/paraque.svg">
+                            </span>
+                            <h3>¿Para qué se gasta?</h3>
+                        </a>
+                        <a title="" data-original-title="" class="col-md-2 col-sm-6 shortcut" href="#como-se-financia">
+                            <span class="icon-container">
+                                <img class="glyphicon como" src="icons/como.svg">
+                            </span>
+                            <h3>¿Cómo se financia?</h3>
+                        </a>
+                        <a title="" data-original-title="" class="col-md-2 col-sm-6 shortcut" href="#donde-se-invierte">
+                            <span class="icon-container">
+                                <img class="glyphicon como" src="icons/donde.svg">
+                            </span>
+                            <h3>¿Dónde se invierte?</h3>
+                        </a>
+                    </div>
                     <!-- quién -->
-                    <h2>¿Quién gasta?</h2>
+                    <h2 id="quien-gasta">¿Quién gasta?</h2>
                     <p>Aquí se puede ver cuáles son las áreas administrativas
                         encargadas de ejecutar el presupuesto, lo que permite conocer quiénes
-                        son los responsables de administrar los recursos públicos. Se la conoce
-                        como <em>clasificación institucional</em>.</p>
+                        son los responsables de administrar los recursos públicos. Se la conoce como <em>clasificación institucional</em>.</p>
                     <div class="visualization-container" id="quien">
                         <div class="controls">
                             <div>
                                 <label class="radio-inline">
-                                    <input type="radio" name="quien-measure-select" value="vigente" checked="checked"> Vigente
+                                    <input type="radio" name="quien-measure-select" value="vigente" checked="checked"> Vigente <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL VIGENTE --------"></span>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="quien-measure-select" value="devengado"> Ejecutado
+                                    <input type="radio" name="quien-measure-select" value="devengado"> Ejecutado <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL EJECUTADO --------"></span>
                                 </label>
                             </div>
                             <div>
@@ -112,7 +118,7 @@
                     <br><br><br><br>
 
                     <!-- qué -->
-                    <h2>¿En qué se gasta?</h2>
+                    <h2 id="en-que-se-gasta">¿En qué se gasta?</h2>
                     <p>Mediante esta desagregación se puede ver qué tipo de bienes y
                         servicios compra o contrata el Gobierno de la Ciudad. Se la conoce como
                         clasificación por <em>objeto del gasto</em>.</p>
@@ -120,10 +126,10 @@
                         <div class="controls">
                             <div>
                                 <label class="radio-inline">
-                                    <input type="radio" name="que-measure-select" value="vigente" checked="checked"> Vigente
+                                    <input type="radio" name="que-measure-select" value="vigente" checked="checked"> Vigente <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL VIGENTE --------"></span>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="que-measure-select" value="devengado"> Ejecutado
+                                    <input type="radio" name="que-measure-select" value="devengado"> Ejecutado <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL EJECUTADO --------"></span>
                                 </label>
                             </div>
                             <div>
@@ -141,7 +147,7 @@
                     <br><br><br><br>
 
                     <!-- para qué -->
-                    <h2>¿Para qué se gasta?</h2>
+                    <h2 id="para-que-se-gasta">¿Para qué se gasta?</h2>
                     <p>A través de esta clasificación se puede ver a qué políticas
                         públicas contribuyen los fondos asignados en el presupuesto,
                         independientemente de cuál sea el área que los ejecute. Se la conoce
@@ -150,10 +156,10 @@
                         <div class="controls">
                             <div>
                                 <label class="radio-inline">
-                                    <input type="radio" name="paraque-measure-select" value="vigente" checked="checked"> Vigente
+                                    <input type="radio" name="paraque-measure-select" value="vigente" checked="checked"> Vigente <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL VIGENTE --------"></span>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="paraque-measure-select" value="devengado"> Ejecutado
+                                    <input type="radio" name="paraque-measure-select" value="devengado"> Ejecutado <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL EJECUTADO --------"></span>
                                 </label>
                             </div>
                             <div>
@@ -170,7 +176,7 @@
                     <br><br><br><br>
 
                     <!-- como -->
-                    <h2>¿Cómo se financia?</h2>
+                    <h2 id="como-se-financia">¿Cómo se financia?</h2>
                     <p>Mediante esta clasificación es posible saber de dónde vienen
                         los recursos de que dispone la Ciudad para financiar sus gastos. Se la
                         llama <em>clasificación por fuente de financiamiento</em>.</p>
@@ -178,10 +184,10 @@
                         <div class="controls">
                             <div>
                                 <label class="radio-inline">
-                                    <input type="radio" name="como-measure-select" value="vigente" checked="checked"> Vigente
+                                    <input type="radio" name="como-measure-select" value="vigente" checked="checked"> Vigente <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL VIGENTE --------"></span>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="como-measure-select" value="devengado"> Ejecutado
+                                    <input type="radio" name="como-measure-select" value="devengado"> Ejecutado <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-content="-------- ESCRIBIR DESCRIPCION DEL EJECUTADO --------"></span>
                                 </label>
                             </div>
                             <div>
@@ -197,9 +203,13 @@
                     </div>
                     <br><br><br><br>
 
+                    <h2 id="donde-se-invierte">¿Donde se invierte?</h2>
+                    <p>XXXXXXXXXXXXXXXXXXXXXXX.</p>
+                    <div class="visualization-container" id="donde">
+                        <div class="viz"></div>
+                    </div>
 
-
-
+                    <!--
                     <div class="visualization-container" id="stacked">
                         <div class="controls">
                             <div>
@@ -233,12 +243,7 @@
                         </div>
                         <div class="viz"></div>
                     </div>
-
-                    <div class="visualization-container" id="sankey">
-                        <div class="viz">
-                        </div>
-                    </div>
-
+                    -->
                     <canvas width="50" height="50" id="icon-canvas" style="visibility: hidden;"></canvas>
                 </div>
             </div>
@@ -254,9 +259,10 @@
               <a class="navbar-brand bac-footer" href="http://www.buenosaires.gob.ar" target="_blank">Buenos Aires Ciudad</a>
             </div>
             <div class="col-md-6 col-sm-6">
-              <div class="sub-brand">
-                <p>Dirección General de Gestión Digital<br />
-                <span class="text-muted">Ministerio de Modernización</span></p>
+                <div class="sub-brand">
+                    <p>Ministerio de Hacienda<br />
+                        Ministerio de Modernización; Innovación y Tecnología<br />
+                        Secretaría General y Relaciones Internacionales</p>
               </div>
             </div>
           </div>

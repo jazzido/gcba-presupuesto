@@ -9,3 +9,28 @@
   align-items: center;
   margin-bottom: 15px;
 }
+
+.icon-container {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  background-color: #fdd306;
+}
+
+.glyphicon.quien {
+  width: 40%;
+}
+
+.glyphicon.como {
+  width: 50%;
+}
+
+.glyphicon.que {
+  width: 30%;
+}
+
+.popover-content {
+  font-weight: normal;
+  font-family: "OpenSans", Helvetica, Arial, sans-serif;
+}
