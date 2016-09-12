@@ -17,7 +17,7 @@ $(function() {
     $('[data-toggle="popover"]').popover({ trigger: "hover" });
 });
 
-var MEASURES = ['sancion', 'vigente', 'definitivo', 'devengado', 'sancion_adjust', 'vigente_adjust', 'definitivo_adjust', 'devengado_adjust'];
+var MEASURES = ['vigente', 'devengado'];
 
 var CSCALE = ['#DF4944',
               '#EE9224',
@@ -181,7 +181,7 @@ d3.csv('Data/geo.csv')
   .row(function(d) {
       return Object.assign(d,
                            _.fromPairs(
-                               _.map(['COMUNAS','sancion','vigente','definitivo','devengado'],
+                               _.map(['COMUNAS'].concat(MEASURES),
                                      function(m) {
                                          return [m, +d[m]];
                                      })));
