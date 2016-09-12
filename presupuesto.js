@@ -1,4 +1,5 @@
 $(function() {
+    // Smooth scrolling
     $('a[href*="#"]:not([href="#"])').click(function() {
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
             var target = $(this.hash);
@@ -12,6 +13,7 @@ $(function() {
         }
     });
 
+    // Activate popovers
     $('[data-toggle="popover"]').popover({ trigger: "hover" });
 });
 
@@ -28,22 +30,6 @@ var CSCALE = ['#DF4944',
               '#2F3E4B',
               '#8A55A7',
               '#F04691'];
-
-
-var canvas = document.getElementById("icon-canvas");
-var ctx = canvas.getContext("2d");
-ctx.font = "30px Arial";
-ctx.fillStyle = "white";
-ctx.textAlign = "center";
-
-function getIconDataURL(text) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillText(text.slice(0,2).toUpperCase(),
-                 canvas.width/2,
-                 canvas.height/2);
-    return canvas.toDataURL();
-}
-
 
 
 d3.csv('Data/presu_agrupado.csv')
@@ -69,7 +55,6 @@ d3.csv('Data/presu_agrupado.csv')
           var selectedChartType = d3.selectAll(contId + " input[name*=chart][type=radio]:checked").node().value;
           var selectedMeasure = d3.selectAll(contId + " input[name*=measure][type=radio]:checked").node().value;
 
-          console.log(selectedChartType, selectedMeasure);
           var chart = d3plus.viz()
                             .format(
                                 {
@@ -202,21 +187,33 @@ d3.csv('Data/geo.csv')
                                      })));
   })
   .get(function(error, rows) {
-      console.log(rows);
-      d3plus.viz()
-            .container("#donde .viz")
-            .data(rows)
-            .coords('Data/comunas_topo.json')
-            .type("geo_map")
-            .id("COMUNAS")
-            .time({
-                value: 'anio',
-                solo: ['2016'] // TODO: Calculate this
-            })
-            .color('vigente')
-            .font({
-                family: 'Helvetica, Arial, sans-serif',
-                weight: '100'
-            })
-            .draw();
+
+      var selectedMeasure = 'vigente';
+
+      var map = d3plus.viz()
+                      .container("#donde .viz")
+                      .data(rows)
+                      .coords('Data/comunas_topo.json')
+                      .type("geo_map")
+                      .id("COMUNAS")
+                      .time({
+                          value: 'anio',
+                          solo: ['2016'], // TODO: Calculate this
+                          fixed: false
+                      })
+                      .color(selectedMeasure)
+                      .font({
+                          family: 'Helvetica, Arial, sans-serif',
+                          weight: '100'
+                      })
+                      .draw();
+
+      d3.selectAll("#donde input[name*=measure][type=radio]")
+        .on("change", function() {
+            selectedMeasure = this.value;
+            map.color(selectedMeasure)
+               .draw();
+        });
+
+
   });
