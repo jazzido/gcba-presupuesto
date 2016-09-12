@@ -190,68 +190,6 @@ d3.csv('Data/presu_agrupado.csv')
             stacked.y(measure).draw();
         });
 
-      /* sankey */
-      /*
-      CF = crossfilter(rows);
-      var d_inciso_ff = CF.dimension(
-          function(d) { return [d.anio, d.inciso_desc, d.ff_desc]; },
-          true
-      );
-
-      var sankey_data = d_inciso_ff
-                      .group()
-                      .reduceSum(_.property('sancion_adjust'))
-                      .all()
-                      .map(function(d, i) {
-                          return {
-                              key: i,
-                              anio: d.key[0],
-                              source: d.key[1],
-                              target: d.key[2],
-                              value: d.value
-                          };
-                      })
-                      .filter(function(d) { return d.anio === '2015'; });
-
-      var nodes = _.map(
-          _.uniq(
-              _.flatMap(sankey_data,
-                        function(d) { return [d.source, d.target]; })
-          ),
-          function(d) { return { id: d }; }
-      );
-
-      var edges = sankey_data.map(function(e) {
-          return {
-              value: e.value,
-              source: nodes.find(function(n) {
-                  return n.id == e.source;
-              }),
-              target: nodes.find(function(n) {
-                  return n.id == e.target;
-              }),
-          }
-      }).filter(function(d) { return d.value > 0; });
-
-      console.log(nodes);
-      console.log(edges);
-
-      d3plus.viz()
-            .container("#sankey .viz")
-            .type("sankey")
-            .id("id")
-            .nodes(
-                nodes
-            )
-            .edges({
-                "strength": "value",
-                "value": edges
-            })
-            //.time('anio')
-            //.size(100)
-            .draw();
-
-      */
   });
 
 d3.csv('Data/geo.csv')
