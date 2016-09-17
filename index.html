@@ -16,11 +16,27 @@
     <link rel="stylesheet" href="bastrap3/bootstrap.min.css">
     <link rel="stylesheet" href="bastrap3/bastrap.css">
     <link rel="stylesheet" href="presupuesto.css">
-    <script src="bower_components/lodash/dist/lodash.min.js"></script>
-    <!-- script src="bower_components/crossfilter2/crossfilter.js"></script -->
-    <!-- load topojson library -->
-    <script src="//d3plus.org/js/topojson.js"></script>
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bubbletree/dist/bubbletree.css" />
+    <!-- endbower -->
+
+    <!-- bower:js -->
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/heap/lib/heap.js"></script>
+    <script src="bower_components/topojson/topojson.js"></script>
     <script src="bower_components/d3plus/d3plus.full.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/eve/eve.js"></script>
+    <script src="bower_components/raphael/raphael.min.js"></script>
+    <script src="bower_components/tween.js/src/Tween.js"></script>
+    <script src="bower_components/bubbletree/dist/bubbletree.js"></script>
+    <script src="bower_components/ev-emitter/ev-emitter.js"></script>
+    <script src="bower_components/imagesloaded/imagesloaded.js"></script>
+    <script src="bower_components/qtip2/jquery.qtip.js"></script>
+    <script src="bower_components/qtip2/basic/jquery.qtip.js"></script>
+    <!-- endbower -->
+
     <!-- ESTILOS EXTRA -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -54,6 +70,13 @@
                         de forma directa sobre la manera en que utilizamos esos fondos. Estamos
                         convencidos de que esa es la manera de estimular la participación,
                         optimizar los controles y mejorar el nivel de la discusión pública.</p>
+
+                    <div class="row">
+                        <div style="position: relative; height: 600px">
+                            <div class="bubbletree-wrapper"><div class="bubbletree"></div></div>
+                        </div>
+                    </div>
+
 
                     <div class="row shortcut-row">
                         <a title="" data-original-title="" class="col-md-offset-1 col-md-2 col-sm-6 shortcut" href="#quien-gasta">
@@ -89,6 +112,7 @@
                             <h3>¿Dónde se invierte?</h3>
                         </a>
                     </div>
+
                     <!-- quién -->
                     <h2 id="quien-gasta">¿Quién gasta?</h2>
                     <p>Aquí se puede ver cuáles son las áreas administrativas
@@ -279,7 +303,6 @@
         </div>
       </div>
     </footer>
-    <script src="bastrap3/jquery.min.js"></script>
     <script src="bastrap3/bootstrap.min.js"></script>
     <!-- JAVASCRIPT EXTRA -->
     <script type="application/javascript" src="presupuesto.js"></script>

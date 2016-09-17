@@ -31,6 +31,54 @@ var CSCALE = ['#DF4944',
               '#8A55A7',
               '#F04691'];
 
+// para cada nodo, calcular recursivamente la suma
+// de su sub-árbol
+// También renombra los keys de los objetos, para
+// conformar a BubbleTree
+function toSumTree(n) {
+    if (_.isNumber(n.values)) {
+        n.label = n.key;
+        n.id = n.label;
+        n.amount = n.values / 1000;
+        return;
+    }
+
+    n.children = n.values;
+    delete n.values;
+    n.label = n.key;
+    n.id = n.label;
+    delete n.key;
+
+    n.children.forEach(toSumTree);
+    n.amount = (n.amount || 0) + d3.sum(n.children, _.property('amount'));
+
+    // if (n.children.length == 1) delete n.children;
+
+    return n;
+}
+
+function btData(rows, measure) {
+
+    var total = d3.nest()
+                  .rollup(function(leaves) { return d3.sum(leaves, _.property(measure)); })
+                  .entries(rows);
+
+    var bub = d3.nest()
+                .key(_.property('fin_desc'))
+                .key(_.property('fun_desc'))
+                .rollup(
+                    function(leaves) {
+                        return d3.sum(leaves,
+                                      _.property(measure));
+                    })
+                .entries(rows);
+
+    return {
+        key: 'Total',
+        values: bub
+    }
+}
+
 
 d3.csv('Data/presu_agrupado.csv')
   .row(function(d) {
@@ -43,6 +91,83 @@ d3.csv('Data/presu_agrupado.csv')
   })
   .get(function(error, rows) {
 
+      ROWS = rows;
+
+      // finalidad y función para el bubble tree
+      var b = btData(_.filter(rows, function(d) { return d.anio === '2016' }),
+                     'vigente');
+
+      console.log('tree', b);
+      toSumTree(b);
+
+      new BubbleTree({
+          data: b,
+          container: '.bubbletree',
+          bubbleType: 'icon',
+          bubbleStyles: {
+              id: {
+                  'Total': {
+                      color: '#1f77b4',
+                      icon: 'icons/bubble/total.svg'
+                  },
+                  'Deuda Pública  Intereses Y Gastos': {
+                      color: '#0f74c7'
+                  },
+                  'Servicios Sociales': {
+                      icon: 'icons/bubble/servicios_sociales.svg',
+                      color: '#1fb7dc'
+                  },
+                  'Servicios Económicos': {
+                      icon: 'icons/bubble/servicios_economicos.svg',
+                      color: '#fad448'
+                  },
+                  'Administración Gubernamental': {
+                      icon: 'icons/bubble/administracion_gubernamental.svg',
+                      color: '#df4944'
+                  },
+                  'Servicios De Seguridad': {
+                      icon: 'icons/bubble/servicios_de_seguridad.svg',
+                      color: '#ee9224'
+                  },
+                  'Educación': {
+                      icon: 'icons/bubble/educacion.svg'
+                  },
+                  'Cultura': {
+                      icon: 'icons/bubble/cultura.svg'
+                  },
+                  'Salud': {
+                      icon: 'icons/bubble/salud.svg'
+                  },
+                  'Vivienda': {
+                      icon: 'icons/bubble/vivienda.svg'
+                  },
+                  'Judicial': {
+                      icon: 'icons/bubble/judicial.svg'
+                  },
+                  'Dirección Ejecutiva': {
+                      icon: 'icons/bubble/direccion_ejecutiva.svg'
+                  },
+                  'Administración Fiscal': {
+                      icon: 'icons/bubble/administracion_fiscal.svg'
+                  },
+                  'Transporte': {
+                      icon: 'icons/bubble/transporte.svg'
+                  },
+                  'Servicios Urbanos': {
+                      icon: 'icons/bubble/servicios_urbanos.svg'
+                  },
+                  'Ecología': {
+                      icon: 'icons/bubble/ecologia.svg'
+                  },
+                  'Vivienda': {
+                      icon: 'icons/bubble/vivienda.svg'
+                  }
+              }
+          },
+          tooltipCallback: function(node) { console.log('tt', node); }
+      });
+
+          // secciones
       var classifications = [
           { classification: 'quien', dimension: 'jur_desc' },
           { classification: 'que', dimension: ['inciso_desc', 'ppal_desc'] },
@@ -58,7 +183,11 @@ d3.csv('Data/presu_agrupado.csv')
           var chart = d3plus.viz()
                             .format(
                                 {
-                                    locale: 'es_ES'
+                                    locale: 'es_ES'/*,
+                                    number: function(num, key) {
+                                        console.log(key, num);
+                                        return num;
+                                    }*/
                                 }
                             )
                             .container(contId + ' .viz')
@@ -79,7 +208,6 @@ d3.csv('Data/presu_agrupado.csv')
                   case 'tree_map':
                       chart
                             .type('tree_map')
-                          //.text(_.isArray(c.dimension) ? _.last(c.dimension) : c.dimension)
                             .time({
                                 value: 'anio',
                                 solo: ['2016'], // TODO: Calculate this
@@ -127,6 +255,7 @@ d3.csv('Data/presu_agrupado.csv')
 
 
       /* stacked */
+      /*
       var measure = 'sancion';
       var stacked = d3plus.viz()
                      .container("#stacked .viz")
@@ -174,7 +303,7 @@ d3.csv('Data/presu_agrupado.csv')
 
             stacked.y(measure).draw();
         });
-
+      */
   });
 
 d3.csv('Data/geo.csv')

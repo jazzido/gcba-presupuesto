@@ -18,7 +18,7 @@
   "dependencies": {
     "d3plus": "^1.9.8",
     "lodash": "^4.15.0",
-    "crossfilter2": "^1.3.14",
-    "lovefield": "^2.1.9"
+    "bubbletree": "*",
+    "qtip2": "^2.2.1"
   }
 }
