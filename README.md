@@ -27,6 +27,9 @@ grunt
 Una vez terminado el proceso, la carpeta `dist` contendrá una versión
 apta para ser copiada a un servidor HTTP.
 
+**IMPORTANTE**: en el servidor HTTP, se recomienda activar compresión
+GZIP para archivos de tipo CSV (MIME type: `text/csv`)
+
 ## Generación de datos
 
 Los datos se generan a partir de los
