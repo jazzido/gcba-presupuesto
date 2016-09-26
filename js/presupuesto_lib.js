@@ -106,7 +106,7 @@ Presupuesto = {
             'Transporte': {
                 icon: 'icons/bubble/transporte.svg'
             },
-            'Servicios Urbanos': {
+            'Mantenimiento Urbano': {
                 icon: 'icons/bubble/servicios_urbanos.svg'
             },
             'Ecología': {
