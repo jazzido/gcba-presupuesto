@@ -17,52 +17,6 @@ $(function() {
     $('[data-toggle="popover"]').popover({ trigger: "hover" });
 });
 
-function formatD3Plus(n, o) {
-    var rv;
-    if (o.key === 'share') {
-        if (n === 0)
-            rv = 0
-        else if (n >= 100)
-            rv = localeES.numberFormat(",f")(n);
-        else if (n > 99)
-            rv = localeES.numberFormat(".3g")(n);
-        else
-            rv = localeES.numberFormat(".2g")(n);
-        rv += "%"
-    }
-    else {
-        rv = formatNumber(n);
-    }
-    return rv;
-}
-
-// patcheamos la función de formateo de BubbleTree
-BubbleTree.Utils.formatNumber = formatNumber;
-
-// para cada nodo, calcular recursivamente la suma
-// de su sub-árbol
-// También renombra los keys de los objetos, para
-// conformar a BubbleTree
-function toSumTree(n) {
-    if (_.isNumber(n.values)) {
-        n.label = n.key;
-        n.id = n.label;
-        n.amount = n.values;// / 1000;
-        return;
-    }
-
-    n.children = n.values;
-    delete n.values;
-    n.label = n.key;
-    n.id = n.label;
-    delete n.key;
-
-    n.children.forEach(toSumTree);
-    n.amount = (n.amount || 0) + d3.sum(n.children, _.property('amount'));
-
-    return n;
-}
-
 d3.csv('Data/presu_agrupado.csv')
   .row(Presupuesto.processBudgetRow)
   .get(function(error, rows) {
@@ -88,7 +42,7 @@ d3.csv('Data/presu_agrupado.csv')
       ];
 
       classifications.forEach(function(c) {
-          Presupuesto.createTreemapAreaViz(c.classification, c.dimension, rows);
+          Presupuesto.createTreemapAreaViz('#' + c.classification, c.dimension, rows);
       });
   });
 
@@ -102,39 +56,5 @@ d3.csv('Data/geo.csv')
                                      })));
   })
   .get(function(error, rows) {
-      var selectedMeasure = 'vigente';
-
-      var map = d3plus.viz()
-                      .container("#donde .viz")
-                      .data(rows)
-                      .coords('Data/comunas_topo.json')
-                      .type("geo_map")
-                      .id("comuna")
-                      .format(
-                          {
-                              locale: 'es_ES',
-                              number: formatD3Plus
-                          }
-                      )
-                      .text(function(d) {
-                          return 'Comuna ' + d.comuna;
-                      })
-                      .time({
-                          value: 'anio',
-                          solo: ['2016'], // TODO: Calculate this
-                          fixed: false
-                      })
-                      .color(selectedMeasure)
-                      .font({
-                          family: 'Helvetica, Arial, sans-serif',
-                          weight: '100'
-                      })
-                      .draw();
-
-      d3.selectAll("#donde input[name*=measure][type=radio]")
-        .on("change", function() {
-            selectedMeasure = this.value;
-            map.color(selectedMeasure)
-               .draw();
-        });
+      Presupuesto.createGeoMapViz('#donde', 'comuna', rows);
   });

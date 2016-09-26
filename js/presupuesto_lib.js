@@ -35,6 +35,10 @@ var d3Format = d3.format('.3s'),
         return abbN;
     };
 
+// patcheamos la función de formateo de BubbleTree
+BubbleTree.Utils.formatNumber = formatNumber;
+
+
 Presupuesto = {
     MEASURES: ['vigente', 'devengado'],
     CSCALE: ['#DF4944', '#EE9224', '#FAD448', '#1FB7DC', '#0F74C7', '#2AB186', '#88B84D', '#CBD640', '#2F3E4B', '#8A55A7', '#F04691'],
@@ -159,10 +163,11 @@ Presupuesto = {
                                         })));
         return o;
     },
-    createTreemapAreaViz: function(container_id, dimension, data) {
-        var contSelector = '#' + container_id
-        var selectedChartType = d3.selectAll(contSelector + " input[name*=chart][type=radio]:checked").node().value;
-        var selectedMeasure = d3.selectAll(contSelector + " input[name*=measure][type=radio]:checked").node().value;
+    createTreemapAreaViz: function(containerSelector, dimension, data) {
+        var contSelector = containerSelector;
+        var container = d3.select(containerSelector);
+        var selectedChartType = container.selectAll("input[name*=chart][type=radio]:checked").node().value;
+        var selectedMeasure = container.selectAll("input[name*=measure][type=radio]:checked").node().value;
 
         var chart = d3plus.viz()
                           .format(
@@ -171,7 +176,7 @@ Presupuesto = {
                                   number: Presupuesto.formatD3Plus
                               }
                           )
-                          .container(contSelector + ' .viz')
+                          .container(container.select('.viz'))
                           .data(data)
                           .id(dimension)
                           .color({
@@ -220,16 +225,55 @@ Presupuesto = {
 
         updateChart();
 
-        d3.selectAll(contSelector + " input[name*=chart][type=radio]")
+        container.selectAll("input[name*=chart][type=radio]")
           .on("change", function() {
               selectedChartType = this.value;
               updateChart();
           });
 
-        d3.selectAll(contSelector + " input[name*=measure][type=radio]")
+        container.selectAll("input[name*=measure][type=radio]")
           .on("change", function() {
               selectedMeasure = this.value;
               updateChart();
+          });
+
+    },
+    createGeoMapViz: function(containerSelector, dimension, data) {
+        var container = d3.select(containerSelector);
+        var selectedMeasure = container.selectAll("input[name*=measure][type=radio]:checked").node().value;
+
+        var map = d3plus.viz()
+                        .container(container.select('.viz'))
+                        .data(data)
+                        .coords('Data/comunas_topo.json')
+                        .type("geo_map")
+                        .id(dimension)
+                        .format(
+                            {
+                                locale: 'es_ES',
+                                number: Presupuesto.formatD3Plus
+                            }
+                        )
+                        .text(function(d) {
+                            return 'Comuna ' + d.comuna;
+                        })
+                        .time({
+                            value: 'anio',
+                            solo: ['2016'], // TODO: Calculate this
+                            fixed: false
+                        })
+                        .color(selectedMeasure)
+                        .font({
+                            family: 'Helvetica, Arial, sans-serif',
+                            weight: '100'
+                        })
+                        .draw();
+
+        container.selectAll("input[name*=measure][type=radio]")
+          .on("change", function() {
+              selectedMeasure = this.value;
+              map.color(selectedMeasure)
+                 .draw();
           });
     },
     toBubbleTree: function(rows, measure) {
