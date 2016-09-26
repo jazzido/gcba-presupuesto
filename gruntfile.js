@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
     // load grunt tasks based on dependencies in package.json
     require('load-grunt-tasks')(grunt);
+    grunt.loadNpmTasks('grunt-rev');
 
     grunt.config.init({
         useminPrepare: {
@@ -19,6 +20,20 @@ module.exports = function(grunt) {
         },
         usemin:{
             html:['dist/index.html', 'dist/iframe.html']
+        },
+        rev: {
+            options: {
+                encoding: 'utf8',
+                algorithm: 'md5',
+                length: 8
+            },
+            assets: {
+                files: [{
+                    src: [
+                        'dist/*.{js,css}'
+                    ]
+                }]
+            }
         },
         copy:{
             html: {
@@ -70,6 +85,7 @@ module.exports = function(grunt) {
         'concat',
         'uglify',
         'cssmin',
+        'rev',
         'usemin'
     ]);
 }
