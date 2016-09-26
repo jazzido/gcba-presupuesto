@@ -247,8 +247,8 @@ d3.csv('Data/presu_agrupado.csv')
           data: b,
           container: '.bubbletree',
           bubbleType: 'icon',
-          bubbleStyles: BUBBLE_STYLES,
-          tooltipCallback: function(node) { console.log('tt', node); }
+          bubbleStyles: BUBBLE_STYLES /*,
+          tooltipCallback: function(node) { console.log('tt', node); } */
       });
 
           // secciones
@@ -338,13 +338,12 @@ d3.csv('Data/geo.csv')
   .row(function(d) {
       return Object.assign(d,
                            _.fromPairs(
-                               _.map(['COMUNAS'].concat(MEASURES),
+                               _.map(['comuna'].concat(MEASURES),
                                      function(m) {
                                          return [m, +d[m]];
                                      })));
   })
   .get(function(error, rows) {
-
       var selectedMeasure = 'vigente';
 
       var map = d3plus.viz()
@@ -352,7 +351,7 @@ d3.csv('Data/geo.csv')
                       .data(rows)
                       .coords('Data/comunas_topo.json')
                       .type("geo_map")
-                      .id("COMUNAS")
+                      .id("comuna")
                       .format(
                           {
                               locale: 'es_ES',
@@ -360,7 +359,7 @@ d3.csv('Data/geo.csv')
                           }
                       )
                       .text(function(d) {
-                          return 'Comuna ' + d.COMUNAS;
+                          return 'Comuna ' + d.comuna;
                       })
                       .time({
                           value: 'anio',
