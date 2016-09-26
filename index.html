@@ -13,14 +13,14 @@
     <title>Gobierno de la Ciudad de Buenos Aires</title>
     <link rel="shortcut icon" href="bastrap3/favicon.ico">
     <link rel="apple-touch-icon-precomposed" href="bastrap3/favicon-mobile.png">
+    <!-- build:css style.min.css -->
     <link rel="stylesheet" href="bastrap3/bootstrap.min.css">
     <link rel="stylesheet" href="bastrap3/bastrap.css">
     <link rel="stylesheet" href="presupuesto.css">
-    <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bubbletree/dist/bubbletree.css" />
-    <!-- endbower -->
+    <!-- endbuild -->
 
-    <!-- bower:js -->
+    <!-- build:js optimized.js -->
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/heap/lib/heap.js"></script>
     <script src="bower_components/topojson/topojson.js"></script>
@@ -30,12 +30,13 @@
     <script src="bower_components/eve/eve.js"></script>
     <script src="bower_components/raphael/raphael.min.js"></script>
     <script src="bower_components/tween.js/src/Tween.js"></script>
-    <script src="bower_components/bubbletree/dist/bubbletree.js"></script>
+    <script src="js/patched_bubbletree.js"></script>
     <script src="bower_components/ev-emitter/ev-emitter.js"></script>
     <script src="bower_components/imagesloaded/imagesloaded.js"></script>
-    <script src="bower_components/qtip2/jquery.qtip.js"></script>
-    <script src="bower_components/qtip2/basic/jquery.qtip.js"></script>
-    <!-- endbower -->
+    <script src="bastrap3/bootstrap.min.js"></script>
+    <script src="presupuesto.js"></script>
+
+    <!-- endbuild -->
 
     <!-- ESTILOS EXTRA -->
     <!--[if lt IE 9]>
@@ -63,13 +64,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Ejecución Presupuestaria</h1>
+                    <h1>Presupuesto Abierto de la Ciudad de Buenos aires</h1>
                     <p>El presupuesto refleja lo que hace el
                         Estado con los recursos que nos pide a todos los ciudadanos. Por eso,
                         desde el Gobierno de la Ciudad de Buenos Aires queremos rendir cuentas
                         de forma directa sobre la manera en que utilizamos esos fondos. Estamos
                         convencidos de que esa es la manera de estimular la participación,
                         optimizar los controles y mejorar el nivel de la discusión pública.</p>
+                    <p>
+                        <small>La información cargada corresponde a la ejecución presupuestaria al 30 de junio de 2016. Se actualizará automáticamente en función de la disponibilidad de la información trimestral. Los datos provienen del conjunto <a href="http://data.buenosaires.gob.ar/dataset/presupuesto-ejecutado">Presupuesto Ejecutado</a> disponible en el portal <a href="http://data.buenosaires.gob.ar/">Buenos Aires Data</a></small>
+                    </p>
 
                     <div class="row">
                         <div style="position: relative; height: 600px">
@@ -109,7 +113,7 @@
                             <span class="icon-container">
                                 <img class="glyphicon como" src="icons/donde.svg">
                             </span>
-                            <h3>¿Dónde se invierte?</h3>
+                            <h3>¿Dónde se hacen obras?</h3>
                         </a>
                     </div>
 
@@ -227,8 +231,8 @@
                     </div>
                     <br><br><br><br>
 
-                    <h2 id="donde-se-invierte">¿Donde se invierte?</h2>
-                    <p>Aquí se combinan dos clasificaciones: la geográfica, que muestra el gasto por comuna, y la económica, que separa entre gastos corrientes y de capital, para visualizar cómo se distribuyen las obras de infraestructura en todo el territorio de la ciudad.</p>
+                    <h2 id="donde-se-invierte">¿Donde se hacen obras?</h2>
+                    <p>Aquí se combinan dos clasificaciones: la geográfica, que muestra el gasto por comuna, y la económica, que separa los gastos corrientes de la inversión pública, para visualizar cómo se distribuyen las obras de infraestructura en todo el territorio de la ciudad.</p>
                     <div class="visualization-container" id="donde">
                         <div class="controls">
                             <div>
@@ -241,44 +245,10 @@
                             </div>
                         </div>
                         <div class="viz"></div>
+                        <p>
+                            <small>El monto de obras en la Comuna 1 es particularmente elevado debido a que allí se registraron $944 millones de transferencias a SBASE para la expansión de la red de subterráneos.</small>
+                        </p>
                     </div>
-
-                    <!--
-                    <div class="visualization-container" id="stacked">
-                        <div class="controls">
-                            <div>
-                                <label>Clasificar según:</label>
-                                <select class="form-control" name="dimension-select">
-                                    <option value="jur_desc">Jurisdicciones</option>
-                                    <option value="inciso_desc">Objeto del Gasto</option>
-                                    <option value="fin_desc">Finalidad</option>
-                                    <option value="ff_desc">Fuente de Financiamiento</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>Etapa presupuestaria:</label><br>
-                                <label class="radio-inline">
-                                    <input type="radio" name="stacked-measure-select" value="sancion" checked="checked"> Sancionado
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="stacked-measure-select" value="vigente"> Vigente
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="stacked-measure-select" value="definitivo"> Definitivo
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="stacked-measure-select" value="devengado"> Devengado
-                                </label>
-
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" id="adjust-toggle" value="true"> Ajustar según IPC-CABA
-                                </label>
-                            </div>
-                        </div>
-                        <div class="viz"></div>
-                    </div>
-                    -->
-                    <canvas width="50" height="50" id="icon-canvas" style="visibility: hidden;"></canvas>
                 </div>
             </div>
         </div>
@@ -303,8 +273,5 @@
         </div>
       </div>
     </footer>
-    <script src="bastrap3/bootstrap.min.js"></script>
-    <!-- JAVASCRIPT EXTRA -->
-    <script type="application/javascript" src="presupuesto.js"></script>
   </body>
 </html>
