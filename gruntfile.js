@@ -4,18 +4,34 @@ module.exports = function(grunt) {
 
     grunt.config.init({
         useminPrepare: {
-            html: 'index.html',
-            options: {
-                dest: 'dist'
+            index: {
+                src: ['index.html'],
+                options: {
+                    dest: 'dist'
+                }
+            },
+            iframe: {
+                src: ['iframe.html'],
+                options: {
+                    dest: 'dist'
+                }
             }
         },
         usemin:{
-            html:['dist/index.html']
+            html:['dist/index.html', 'dist/iframe.html']
         },
         copy:{
             html: {
-                src: './index.html',
-                dest: 'dist/index.html'
+                files: [
+                    {
+                        src: './index.html',
+                        dest: 'dist/index.html'
+                    },
+                    {
+                        src: './iframe.html',
+                        dest: 'dist/iframe.html'
+                    }
+                ]
             },
             data: {
                 expand: true,
@@ -34,7 +50,12 @@ module.exports = function(grunt) {
                         src: [ 'bastrap3/*.{png,svg}' ],
                         dest: 'dist/'
                     },
-                    {expand: true, cwd: 'bastrap3/fonts/', src: ['**'], dest: 'dist/fonts/'},
+                    {
+                        expand: true,
+                        cwd: 'bastrap3/fonts/',
+                        src: ['**'],
+                        dest: 'dist/fonts/'
+                    },
 
                 ]}
         }
